@@ -14,6 +14,10 @@ h1 {
 .hide {
 	display: none;
 }
+button {
+	margin: 0 2px;
+
+}
 
 #menuContainer {
 	width: 57%;
@@ -22,25 +26,35 @@ h1 {
 	border: dashed 1px #dddddd;
 	padding: 10px;
 }
+#menuContainer > div {
+	margin: 25px;
+}
+#menuContainer > .selected > ul {
+	box-shadow: rgb(0, 44, 164) 0 0 1.7em -5px;
+}
+
 #menuPanelTool {
 	border: dashed 1px #dddddd;
 	background-color: #eaeaea;
-	display: inline-block;
+	display: none;
 	width: 36vw;
 	padding: 10px;
 	position: fixed;
 	top: 110px;
 	left: 1vw;
-}  #menuPanelTool .ui-widget-header {
-		padding: 0;
-		border: none;
-		background: transparent;
-		/*color: #333;*/
-	} #menuPanelTool .ui-widget-header > input {
-			font-weight: bold;
-		}
-		#menuPanelTool li {
-			margin: 4px;
-		} #menuPanelTool li input {
-			max-width: 160px;
-		}
+}
+#menuPanelTool .ui-widget-header {
+	padding: 0;
+	border: none;
+	background: transparent;
+	/*color: #333;*/
+}
+#menuPanelTool .ui-widget-header > input {
+	font-weight: bold;
+}
+#menuPanelTool li {
+	margin: 4px;
+}
+#menuPanelTool li input {
+	width: 180px;
+}

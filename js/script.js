@@ -22,18 +22,29 @@ $(function() {
 		buildMenu(menus[menuID], $menu);
 
 		$menu.on('dblclick', function () {
-				$main.find('.selected').removeClass('selected');
-				$menu.addClass('selected');
-				$tools.empty();
-				currentMenu = menuID;
-				buildTree(menus[menuID], $tools);
-				$panelTools.slideDown();
-				$tools.find('input').on('change', function () { rebuildAllBinds() });
+			$main.find('.selected').removeClass('selected');
+			$menu.addClass('selected');
+			$tools.empty();
+			currentMenu = menuID;
+			buildTree(menus[menuID], $tools);
+			$panelTools.slideDown();
+			$tools.find('input').on('change', function () { rebuildAllBinds() });
+
+			$(document).mouseup(function (e){
+				if ( currentMenu === menuID
+					&& !$menu.is(e.target)
+//					&& !$menu.has(e.target).length === 0
+					&& !$panelTools.is(e.target)
+					&& $panelTools.has(e.target).length === 0 ) {
+						$menu.removeClass('selected');
+						currentMenu = null;
+						$panelTools.slideUp();
+					}
+			});
 		});
+
 		$menu.children('ul').menu({ items: "> :not(.ui-widget-header)" })
 	});
-
-	$('#rebuildMenu').on('click', function () { rebuildAllBinds() });
 
 	var $btnAdd = $('#addItem').on('click', function () {
 		if ($tools.children('ul').length) {
@@ -42,7 +53,7 @@ $(function() {
 			$ul = $('<ul>').appendTo($tools)
 		}
 		var $li = $('<li></li>').appendTo($ul);
-		$('<input type="text">').appendTo($li)
+		$('<input type="text" placeholder="исп. как разделитель" value="new item">').appendTo($li)
 			.on('change', function () { rebuildAllBinds() });
 		addBtns($li)
 	});
@@ -138,13 +149,13 @@ $(function() {
 			if (node.tag) { // !
 				var $tag = $('<' + node.tag + '>').appendTo(target);
 				if (node.content) {
-					$tag.append('<input type="text" value="' + node.content + '">');
+					$tag.append('<input type="text" placeholder="исп. как разделитель" value="' + node.content + '">');
 						if (node.className) {
 							$tag.addClass(node.className)
 						}
 					addBtns($tag);
 				} else if (node.tag === 'li'){
-					$tag.append('<input type="text" value="">');
+					$tag.append('<input type="text" placeholder="исп. как разделитель">');
 					if (node.className) {
 						$tag.addClass(node.className)
 					}
@@ -213,7 +224,7 @@ $(function() {
 					}
 					rebuildAllBinds();
 					var $li = $('<li></li>').appendTo($ul);
-					$('<input type="text">').appendTo($li)
+					$('<input type="text" placeholder="исп. как разделитель" value="new item">').appendTo($li)
 						.on('change', function () { rebuildAllBinds() });
 					addBtns($li)
 				});
