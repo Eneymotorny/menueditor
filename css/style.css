@@ -87,3 +87,6 @@ button {
 }.horizontal-menu.ui-menu > .ui-menu-item:last-child {
 	border-right: none !important;
 }
+.horizontal-menu.ui-menu > .ui-menu-item > div > .ui-menu-icon {
+	display: none;
+}
