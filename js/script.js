@@ -9,7 +9,6 @@ $(function() {
 
 	var menus = {}, currentMenu = null, nestedLevel = 3;
 
-	console.log('all', menus);
 
 
 	$('#addMenu').on('click', function () {
@@ -27,13 +26,15 @@ $(function() {
 			$tools.empty();
 			currentMenu = menuID;
 			buildTree(menus[menuID], $tools);
+			addHorizBtn();
+
 			$panelTools.slideDown();
 			$tools.find('input').on('change', function () { rebuildAllBinds() });
 
 			$(document).mouseup(function (e){
 				if ( currentMenu === menuID
 					&& !$menu.is(e.target)
-//					&& !$menu.has(e.target).length === 0
+					&& $menu.has(e.target).length === 0
 					&& !$panelTools.is(e.target)
 					&& $panelTools.has(e.target).length === 0 ) {
 						$menu.removeClass('selected');
@@ -55,7 +56,8 @@ $(function() {
 		var $li = $('<li></li>').appendTo($ul);
 		$('<input type="text" placeholder="исп. как разделитель" value="new item">').appendTo($li)
 			.on('change', function () { rebuildAllBinds() });
-		addBtns($li)
+		addBtns($li);
+		rebuildAllBinds()
 	});
 	$('<span>').addClass('ui-icon ui-icon-plusthick').appendTo($btnAdd);
 
@@ -84,11 +86,11 @@ $(function() {
 				}]
 			}, {
 				tag: 'li',
-				content: 'item 2',
+				content: 'Category 1',
 				className: 'ui-widget-header'
 			}, {
 				tag: 'li',
-				content: 'item 3',
+				content: 'item 2',
 				nested: [{
 					tag: 'ul',
 					nested: [{
@@ -110,13 +112,15 @@ $(function() {
 		readTree(currentMenu);
 		$menu.empty();
 		buildMenu(menus[currentMenu], $menu);
-		$menu.children('ul').menu({ items: "> :not(.ui-widget-header)" });
-		/*$tools.find('input').on('change', function () { rebuildAllBinds() })*/
-		/*console.log('rebuild', menus[currentMenu]);*/
+		$menu.children('ul').menu({
+			items: "> :not(.ui-widget-header)"
+		});
+		addHorizBtn()
 	}
 	function readTree(dataID) {
 		var menu = menus[dataID] = [];
 		readTreeIter($tools.children(), menu);
+console.log('read',menu);
 
 		function readTreeIter(container, data) {
 			container.each(function (indx, domElem) {
@@ -146,7 +150,7 @@ $(function() {
 		for (var i = 0; i < data.length; i++) {
 			var node = data[i];
 
-			if (node.tag) { // !
+			if (node.tag) {
 				var $tag = $('<' + node.tag + '>').appendTo(target);
 				if (node.content) {
 					$tag.append('<input type="text" placeholder="исп. как разделитель" value="' + node.content + '">');
@@ -231,6 +235,22 @@ $(function() {
 			$('<span>').addClass('ui-icon ui-icon-arrowreturnthick-1-e').appendTo($btnNest)
 		}
 
-		rebuildAllBinds()
+		/*rebuildAllBinds()*/
+	}
+	function addHorizBtn() {
+		$panelTools.find('.checkboxBtn').remove();
+		if (menus[currentMenu][0].className === 'horizontal-menu') {
+			$('<button>').addClass('checkboxBtn').text('horizontal').appendTo($panelTools).on('click', function () {
+				$tools.children('ul').removeClass('horizontal-menu');
+				$(this).remove();
+				rebuildAllBinds()
+			})
+		} else {
+			$('<button>').addClass('checkboxBtn').text('vertical').appendTo($panelTools).on('click', function () {
+				$tools.children('ul').addClass('horizontal-menu');
+				$(this).remove();
+				rebuildAllBinds()
+			})
+		}
 	}
 });

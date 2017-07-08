@@ -16,15 +16,15 @@ h1 {
 }
 button {
 	margin: 0 2px;
-
 }
 
 #menuContainer {
 	width: 57%;
 	margin-left: 40%;
 	min-height: 500px;
-	border: dashed 1px #dddddd;
+	border: dashed 1px #9b9b9b;
 	padding: 10px;
+	border-radius: 10px;
 }
 #menuContainer > div {
 	margin: 25px;
@@ -34,14 +34,17 @@ button {
 }
 
 #menuPanelTool {
-	border: dashed 1px #dddddd;
-	background-color: #eaeaea;
+	border: dashed 1px #9b9b9b;
+	background-color: #f4f4f4;
 	display: none;
 	width: 36vw;
 	padding: 10px;
 	position: fixed;
 	top: 110px;
 	left: 1vw;
+	border-radius: 5px;
+	z-index: 9;
+	overflow: auto ;
 }
 #menuPanelTool .ui-widget-header {
 	padding: 0;
@@ -57,4 +60,30 @@ button {
 }
 #menuPanelTool li input {
 	width: 180px;
+}
+#menuPanelTool > button:last-child {
+	float: right;
+}
+#addMenu {
+	margin-left: 40vw;
+	margin-bottom: 3px;
+}
+
+.horizontal-menu.ui-menu {
+	display: inline-flex;
+	width: auto;
+	max-width: none;
+}
+.horizontal-menu.ui-menu > .ui-menu-item {
+	position: relative!important;
+}
+.horizontal-menu.ui-menu > .ui-menu-item > .ui-menu {
+	position: absolute;
+	top: 28px !important;
+	left: 0 !important;
+}
+.horizontal-menu.ui-menu  > .ui-menu-item {
+	border-right: 1px solid #adadad !important;
+}.horizontal-menu.ui-menu > .ui-menu-item:last-child {
+	border-right: none !important;
 }
