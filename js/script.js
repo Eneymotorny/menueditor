@@ -119,7 +119,6 @@ $(function() {
 				}
 				if (content) {
 					node.content = content;
-					console.log('вот он', content)
 				}
 				if (className) {
 					node.className = className
