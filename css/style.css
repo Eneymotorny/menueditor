@@ -7,6 +7,13 @@ h1 {
 .ui-menu .ui-menu-item {
 	list-style-image: none;
 }
+.ui-widget-header {
+	padding: 0.2em;
+}
+
+.hide {
+	display: none;
+}
 
 #menuContainer {
 	width: 57%;
@@ -24,4 +31,16 @@ h1 {
 	position: fixed;
 	top: 110px;
 	left: 1vw;
-}
+}  #menuPanelTool .ui-widget-header {
+		padding: 0;
+		border: none;
+		background: transparent;
+		/*color: #333;*/
+	} #menuPanelTool .ui-widget-header > input {
+			font-weight: bold;
+		}
+		#menuPanelTool li {
+			margin: 4px;
+		} #menuPanelTool li input {
+			max-width: 160px;
+		}

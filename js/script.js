@@ -23,94 +23,34 @@ $(function() {
 
 		$menu.on('dblclick', function () {
 				$main.find('.selected').removeClass('selected');
-				$menu.addClass('selected')/*.children('ul').menu()*/;
-				$tools.html('');
+				$menu.addClass('selected');
+				$tools.empty();
 				currentMenu = menuID;
 				buildTree(menus[menuID], $tools);
 				$panelTools.slideDown();
-				$tools.find('input').on('change', function () { rebuildAllBind() });
+				$tools.find('input').on('change', function () { rebuildAllBinds() });
 		});
-		$menu.children('ul').menu()
+		$menu.children('ul').menu({ items: "> :not(.ui-widget-header)" })
 	});
-	$('#rebuildMenu').on('click', function () { rebuildAllBind() });
+
+	$('#rebuildMenu').on('click', function () { rebuildAllBinds() });
+
 	var $btnAdd = $('#addItem').on('click', function () {
 		if ($tools.children('ul').length) {
 			var $ul = $tools.children('ul');
 		} else {
 			$ul = $('<ul>').appendTo($tools)
 		}
-		var $li = $('<li><input type="text"></li>').appendTo($ul);
+		var $li = $('<li></li>').appendTo($ul);
+		$('<input type="text">').appendTo($li)
+			.on('change', function () { rebuildAllBinds() });
 		addBtns($li)
 	});
 	$('<span>').addClass('ui-icon ui-icon-plusthick').appendTo($btnAdd);
 
-	function rebuildAllBind() {
-		var $menu = $('#' + currentMenu);
-		readTree(currentMenu);
-		$menu.html('');
-		buildMenu(menus[currentMenu], $menu);
-		$menu.children('ul').menu();
-		$tools.find('input').on('change', function () { rebuildAllBind() });
-		/*console.log('rebuild', menus[currentMenu]);*/
-	}
-	function readTree(dataID) {
-		var menu = menus[dataID] = [];
-		/*console.log('read', menu);*/
-		readTreeIter($tools.children(), menu);
-
-		function readTreeIter(container, data) {
-			container.each(function (indx, domElem) {
-				var obj = data[indx] = {},
-					tag = $(domElem)[0].localName,
-					content = $(domElem).children('input').val();
-				if (tag === 'ul' || tag === 'li') {
-					obj.tag = tag;
-				}
-				if (content) {
-					obj.content = content
-				}
-				if ($(domElem).children('ul, li').length) {
-					var nested = obj.nested = [];
-					readTreeIter($(domElem).children('ul, li'), nested)
-				}
-			});
-		}
-	}
-	function buildTree(data, target) {
-		for (var i = 0; i < data.length; i++) {
-			var node = data[i];
-
-			if (node.tag) { // !
-				var $tag = $('<' + node.tag + '>').appendTo(target);
-				if (node.content) {
-					$tag.append('<input type="text" value="' + node.content + '">');
-					addBtns($tag);
-				}
-			}
-			if (node.nested && node.nested.length) {
-				buildTree(node.nested, $tag);
-			}
-		}
-	}
-	function buildMenu(data, target) {
-		for (var i = 0; i < data.length; i++) {
-			var node = data[i];
-
-			if (node.tag) { // !
-				var $tag = $('<' + node.tag + '>').appendTo(target);
-				if (node.content) {
-					$tag.append('<div>' + node.content + '</div>');
-				}
-			}
-			if (node.nested && node.nested.length) {
-				buildMenu(node.nested, $tag);
-			}
-		}
-	}
 	function setDefaultMenu() {
 		return [{
 			tag: 'ul',
-			/*id: id,*/
 			nested: [{
 				tag: 'li',
 				content: 'item 1',
@@ -134,6 +74,10 @@ $(function() {
 			}, {
 				tag: 'li',
 				content: 'item 2',
+				className: 'ui-widget-header'
+			}, {
+				tag: 'li',
+				content: 'item 3',
 				nested: [{
 					tag: 'ul',
 					nested: [{
@@ -147,34 +91,136 @@ $(function() {
 						content: 'item 2.3'
 					}]
 				}]
-			}, {
-				tag: 'li',
-				content: 'item 3'
 			}]
 		}];
 	}
+	function rebuildAllBinds() {
+		var $menu = $('#' + currentMenu);
+		readTree(currentMenu);
+		$menu.empty();
+		buildMenu(menus[currentMenu], $menu);
+		$menu.children('ul').menu({ items: "> :not(.ui-widget-header)" });
+		/*$tools.find('input').on('change', function () { rebuildAllBinds() })*/
+		/*console.log('rebuild', menus[currentMenu]);*/
+	}
+	function readTree(dataID) {
+		var menu = menus[dataID] = [];
+		readTreeIter($tools.children(), menu);
+
+		function readTreeIter(container, data) {
+			container.each(function (indx, domElem) {
+				var node = data[indx] = {},
+					tag = $(domElem)[0].localName,
+					content = $(domElem).children('input').val(),
+					className = $(domElem)[0].className;
+
+				if (tag === 'ul' || tag === 'li') {
+					node.tag = tag;
+				}
+				if (content) {
+					node.content = content;
+					console.log('вот он', content)
+				}
+				if (className) {
+					node.className = className
+				}
+
+				if ($(domElem).children('ul, li').length) {
+					var nested = node.nested = [];
+					readTreeIter($(domElem).children('ul, li'), nested)
+				}
+			});
+		}
+	}
+	function buildTree(data, target) {
+		for (var i = 0; i < data.length; i++) {
+			var node = data[i];
+
+			if (node.tag) { // !
+				var $tag = $('<' + node.tag + '>').appendTo(target);
+				if (node.content) {
+					$tag.append('<input type="text" value="' + node.content + '">');
+						if (node.className) {
+							$tag.addClass(node.className)
+						}
+					addBtns($tag);
+				} else if (node.tag === 'li'){
+					$tag.append('<input type="text" value="">');
+					if (node.className) {
+						$tag.addClass(node.className)
+					}
+					addBtns($tag);
+				}
+			}
+			if (node.nested && node.nested.length) {
+				buildTree(node.nested, $tag);
+			}
+		}
+	}
+	function buildMenu(data, target) {
+		for (var i = 0; i < data.length; i++) {
+			var node = data[i];
+
+			if (node.tag) { // !
+				var $tag = $('<' + node.tag + '>').appendTo(target);
+				if (node.content) {
+					$tag.append('<div>' + node.content + '</div>');
+				}
+			}
+			if (node.className) {
+				$tag.addClass(node.className);
+			}
+			if (node.nested && node.nested.length) {
+				buildMenu(node.nested, $tag);
+			}
+		}
+	}
 	function addBtns(target) {
+		var $inp = target.children('input');
+
+		var $btnRemove = $('<button>').insertAfter($inp).on('click', function () {
+			target.remove();
+			rebuildAllBinds()
+		});
+		$('<span>').addClass('ui-icon ui-icon-close').appendTo($btnRemove);
+
+		if ($(target)[0].className === 'ui-widget-header') {
+			var $btnCategoryTrue = $('<button>').insertAfter($inp).on('click', function () {
+				target.removeClass('ui-widget-header');
+				target.children('ul').removeClass('hide');
+				$(target).children('button').remove();
+				rebuildAllBinds();
+				addBtns(target)
+			});
+			$('<span>').addClass('ui-icon ui-icon-locked').appendTo($btnCategoryTrue);
+		} else {
+			var $btnCategory = $('<button>').insertAfter($inp).on('click', function () {
+				target.addClass('ui-widget-header');
+				target.children('ul').addClass('hide');
+				$(target).children('button').remove();
+				rebuildAllBinds();
+				addBtns(target)
+			});
+			$('<span>').addClass('ui-icon ui-icon-unlocked').appendTo($btnCategory);
+		}
+
 		if (target.parents('ul').length < nestedLevel) {
-			var $btnNest = $('<button>').appendTo(target)
+			var $btnNest = $('<button>').insertAfter($inp)/*.appendTo(target)*/
 				.on('click', function () {
 					if (target.children('ul').length) {
 						var $ul = target.children('ul');
 					} else {
 						$ul = $('<ul>').appendTo(target)
 					}
-					rebuildAllBind();
+					rebuildAllBinds();
 					var $li = $('<li></li>').appendTo($ul);
 					$('<input type="text">').appendTo($li)
-						.on('change', function () { rebuildAllBind() });
+						.on('change', function () { rebuildAllBinds() });
 					addBtns($li)
 				});
 			$('<span>').addClass('ui-icon ui-icon-arrowreturnthick-1-e').appendTo($btnNest)
 		}
-		var $btnRemove = $('<button>').appendTo(target).on('click', function () {
-			target.remove();
-			rebuildAllBind()
-		});
-		$('<span>').addClass('ui-icon ui-icon-close').appendTo($btnRemove);
-		rebuildAllBind()
+
+		rebuildAllBinds()
 	}
 });
