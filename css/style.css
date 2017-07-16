@@ -44,6 +44,8 @@ button {
 	left: 1vw;
 	border-radius: 5px;
 	z-index: 9;
+	max-height: calc(95vh - 110px);
+	min-width: 465px;
 	overflow: auto ;
 }
 #menuPanelTool .ui-widget-header {

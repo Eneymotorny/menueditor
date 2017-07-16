@@ -7,7 +7,7 @@ $(function() {
 		$tools = $panelTools.children('div'),
 		$main = $('#menuContainer');
 
-	var menus = {}, currentMenu = null, nestedLevel = 3;
+	var menus = {}, currentMenu = null, nestedLevel = 4;
 
 
 
@@ -20,7 +20,7 @@ $(function() {
 
 		buildMenu(menus[menuID], $menu);
 
-		$menu.on('dblclick', function () {
+		$menu.on('click', function () {
 			$main.find('.selected').removeClass('selected');
 			$menu.addClass('selected');
 			$tools.empty();
