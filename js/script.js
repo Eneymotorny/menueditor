@@ -34,7 +34,7 @@ $(function() {
 			$panelHead.children('button').css( 'visibility', 'visible' );
 			$tools.find('input').on('change', function () { rebuildAllBinds() });
 
-			$(document).mouseup(function (e){
+			$(document).mousedown(function (e){
 				if ( currentMenu === menuID
 					&& !$menu.is(e.target)
 					&& $menu.has(e.target).length === 0
@@ -200,7 +200,8 @@ console.log('read',menu);
 		var $btnGroup = $('<div>').addClass('btn-group unvisible').insertAfter($inp);
 
 		if (target.parents('ul').length < nestedLevel) {
-			var $btnNest = $('<button class="btn btn-success btn-sm" type="button">').appendTo($btnGroup)/*insertAfter($inp)*/
+			var $btnNest = $('<button class="btn btn-success btn-sm" type="button">')
+				.appendTo($btnGroup)
 				.on('click', function () {
 					if (target.children('ul').length) {
 						var $ul = target.children('ul');
@@ -209,7 +210,8 @@ console.log('read',menu);
 					}
 					rebuildAllBinds();
 					var $li = $('<li></li>').appendTo($ul);
-					$('<input type="text" class="form-control" placeholder="исп. как разделитель" value="new item">').appendTo($li)
+					$('<input type="text" class="form-control" placeholder="исп. как разделитель" value="new item">')
+						.appendTo($li)
 						.on('change', function () {
 							rebuildAllBinds()
 						});
@@ -228,7 +230,8 @@ console.log('read',menu);
 				});
 			$('<span>').addClass('glyphicon glyphicon-folder-close').appendTo($btnCategoryTrue);
 		} else {
-			var $btnCategory = $('<button class="btn btn-info btn-sm" type="button">').appendTo($btnGroup)/*insertAfter($inp)*/.on('click', function () {
+			var $btnCategory = $('<button class="btn btn-info btn-sm" type="button">')
+				.appendTo($btnGroup).on('click', function () {
 				target.addClass('ui-widget-header');
 				target.children('ul').addClass('hide');
 				$(target).children('.btn-group').children('button').remove();
@@ -237,7 +240,8 @@ console.log('read',menu);
 			});
 			$('<span>').addClass('glyphicon glyphicon-folder-open').appendTo($btnCategory);
 		}
-		var $btnRemove = $('<button class="btn btn-danger btn-sm" type="button">').appendTo($btnGroup)/*insertAfter($inp)*/.on('click', function () {
+		var $btnRemove = $('<button class="btn btn-danger btn-sm" type="button">')
+			.appendTo($btnGroup).on('click', function () {
 			target.remove();
 			rebuildAllBinds()
 		});
@@ -272,12 +276,4 @@ console.log('read',menu);
 			})
 		}
 	}
-/*	function showBtn(inpt) {
-		inpt.on('mouseenter', function () {
-			inpt.next('.btn-group').removeClass('unvisible')
-		});
-		inpt.on('mouseleave', function () {
-			inpt.next('.btn-group').addClass('unvisible')
-		})
-	}*/
 });

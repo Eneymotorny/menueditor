@@ -21,8 +21,8 @@ button {
 }
 
 #menuContainer {
-	width: 57%;
-	margin-left: 40%;
+	width: 52%;
+	margin-left: 45%;
 	min-height: 500px;
 }
 #menuContainer > .panel-body > div {
@@ -37,12 +37,13 @@ button {
 
 #menuPanelTool {
 	background-color: #f4f4f4;
-	width: 36vw;
+	width: 38vw;
 	position: fixed;
 	top: 69px;
 	left: 1vw;
 	z-index: 9;
-	min-width: 495px;
+	max-width: 560px;
+	min-width: 445px;
 }
 #menuPanelTool .panel-body {
 	max-height: calc(95vh - 110px);
@@ -55,13 +56,13 @@ button {
 	padding: 0;
 	border: none;
 	background: transparent;
-	/*color: #333;*/
 }
 #menuPanelTool .ui-widget-header > input {
 	font-weight: bold;
 }
 #menuPanelTool li {
 	margin: 4px;
+	white-space: nowrap;
 }
 #menuPanelTool li input {
 	width: 180px;
