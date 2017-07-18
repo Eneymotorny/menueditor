@@ -75,24 +75,17 @@ button {
 }
 .form-control {
 	display: inline-block;
-	margin-right: 3px;
-}
-/*li:not(ul) {
-	opacity: 0;
-}
-li:hover {
-	opacity: 1;
-}
-.listener {
-	opacity: 0;
 }
 .unvisible {
-	visibility: hidden;
+	opacity: 0.12;
+	-webkit-filter: grayscale(90%);
+	filter: grayscale(90%);
 }
 .unvisible:hover {
-	visibility: visible;
-}*/
-
+	opacity: 1;
+	-webkit-filter: grayscale(0%);
+	filter: grayscale(0%);
+}
 .horizontal-menu.ui-menu {
 	display: inline-flex;
 	width: auto;

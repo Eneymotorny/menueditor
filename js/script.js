@@ -197,35 +197,10 @@ console.log('read',menu);
 	}
 	function addBtns(target) {
 		var $inp = target.children('input');
+		var $btnGroup = $('<div>').addClass('btn-group unvisible').insertAfter($inp);
 
-		var $btnRemove = $('<button class="btn btn-danger btn-sm unvisible" type="button">').insertAfter($inp).on('click', function () {
-			target.remove();
-			rebuildAllBinds()
-		});
-		$('<span>').addClass('glyphicon glyphicon-remove').appendTo($btnRemove);
-
-		if ($(target)[0].className === 'ui-widget-header') {
-			var $btnCategoryTrue = $('<button class="btn btn-warning btn-sm unvisible" type="button">')
-				.insertAfter($inp).on('click', function () {
-					target.removeClass('ui-widget-header');
-					target.children('ul').removeClass('hide');
-					$(target).children('button').remove();
-					rebuildAllBinds();
-					addBtns(target)
-				});
-			$('<span>').addClass('glyphicon glyphicon-folder-close').appendTo($btnCategoryTrue);
-		} else {
-			var $btnCategory = $('<button class="btn btn-info btn-sm unvisible" type="button">').insertAfter($inp).on('click', function () {
-				target.addClass('ui-widget-header');
-				target.children('ul').addClass('hide');
-				$(target).children('button').remove();
-				rebuildAllBinds();
-				addBtns(target)
-			});
-			$('<span>').addClass('glyphicon glyphicon-folder-open').appendTo($btnCategory);
-		}
 		if (target.parents('ul').length < nestedLevel) {
-			var $btnNest = $('<button class="btn btn-success btn-sm unvisible" type="button">').insertAfter($inp)
+			var $btnNest = $('<button class="btn btn-success btn-sm" type="button">').appendTo($btnGroup)/*insertAfter($inp)*/
 				.on('click', function () {
 					if (target.children('ul').length) {
 						var $ul = target.children('ul');
@@ -242,21 +217,67 @@ console.log('read',menu);
 				});
 			$('<span>').addClass('glyphicon glyphicon-share-alt icon-turn').appendTo($btnNest);
 		}
+		if ($(target)[0].className === 'ui-widget-header') {
+			var $btnCategoryTrue = $('<button class="btn btn-warning btn-sm" type="button">')
+				.appendTo($btnGroup)/*insertAfter($inp)*/.on('click', function () {
+					target.removeClass('ui-widget-header');
+					target.children('ul').removeClass('hide');
+					$(target).children('.btn-group').children('button').remove();
+					rebuildAllBinds();
+					addBtns(target)
+				});
+			$('<span>').addClass('glyphicon glyphicon-folder-close').appendTo($btnCategoryTrue);
+		} else {
+			var $btnCategory = $('<button class="btn btn-info btn-sm" type="button">').appendTo($btnGroup)/*insertAfter($inp)*/.on('click', function () {
+				target.addClass('ui-widget-header');
+				target.children('ul').addClass('hide');
+				$(target).children('.btn-group').children('button').remove();
+				rebuildAllBinds();
+				addBtns(target)
+			});
+			$('<span>').addClass('glyphicon glyphicon-folder-open').appendTo($btnCategory);
+		}
+		var $btnRemove = $('<button class="btn btn-danger btn-sm" type="button">').appendTo($btnGroup)/*insertAfter($inp)*/.on('click', function () {
+			target.remove();
+			rebuildAllBinds()
+		});
+		$('<span>').addClass('glyphicon glyphicon-remove').appendTo($btnRemove);
+
+		$( $inp ).on('mouseenter', function () {
+			$inp.next('.btn-group').removeClass('unvisible')
+		});
+		$inp.next('.btn-group').on('mouseenter', function () {
+			$inp.next('.btn-group').removeClass('unvisible')
+		});
+		$( $inp, $inp.next('.btn-group') ).on('mouseleave', function () {
+			$inp.next('.btn-group').addClass('unvisible')
+		});
+		$inp.next('.btn-group').on('mouseleave', function () {
+			$inp.next('.btn-group').addClass('unvisible')
+		})
 	}
 	function addHorizBtn() {
 		$panelHead.find('.checkboxBtn').remove();
 		if (menus[currentMenu][0].className === 'horizontal-menu') {
-			$('<button>').addClass('checkboxBtn btn btn-primary btn-sm unvisible').text('horizontal').appendTo($panelHead).on('click', function () {
+			$('<button>').addClass('checkboxBtn btn btn-primary btn-sm').text('horizontal').appendTo($panelHead).on('click', function () {
 				$tools.children('ul').removeClass('horizontal-menu');
 				$(this).remove();
 				rebuildAllBinds()
 			})
 		} else {
-			$('<button>').addClass('checkboxBtn btn btn-primary btn-sm unvisible').text('vertical').appendTo($panelHead).on('click', function () {
+			$('<button>').addClass('checkboxBtn btn btn-primary btn-sm').text('vertical').appendTo($panelHead).on('click', function () {
 				$tools.children('ul').addClass('horizontal-menu');
 				$(this).remove();
 				rebuildAllBinds()
 			})
 		}
 	}
+/*	function showBtn(inpt) {
+		inpt.on('mouseenter', function () {
+			inpt.next('.btn-group').removeClass('unvisible')
+		});
+		inpt.on('mouseleave', function () {
+			inpt.next('.btn-group').addClass('unvisible')
+		})
+	}*/
 });
