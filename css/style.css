@@ -24,32 +24,33 @@ button {
 	width: 57%;
 	margin-left: 40%;
 	min-height: 500px;
-	border: dashed 1px #9b9b9b;
-	padding: 10px;
-	border-radius: 10px;
 }
-#menuContainer > div {
-	margin: 25px;
+#menuContainer > .panel-body > div {
+	margin-bottom: 30px;
 }
-#menuContainer > .selected > ul {
+#menuContainer > .panel-body > div > ul {
+	min-height: 10px;
+}
+#menuContainer > .panel-body > .selected > ul {
 	box-shadow: rgb(0, 44, 164) 0 0 1.7em -5px;
 }
 
 #menuPanelTool {
-	border: dashed 1px #9b9b9b;
 	background-color: #f4f4f4;
-	display: none;
 	width: 36vw;
-	padding: 10px;
 	position: fixed;
-	top: 110px;
+	top: 69px;
 	left: 1vw;
-	border-radius: 5px;
 	z-index: 9;
-	max-height: calc(95vh - 110px);
-	min-width: 465px;
-	overflow: auto ;
+	min-width: 495px;
 }
+#menuPanelTool .panel-body {
+	max-height: calc(95vh - 110px);
+	display: none;
+	padding-left: 1px;
+	overflow: auto;
+}
+
 #menuPanelTool .ui-widget-header {
 	padding: 0;
 	border: none;
@@ -65,13 +66,33 @@ button {
 #menuPanelTool li input {
 	width: 180px;
 }
-#menuPanelTool > button:last-child {
-	float: right;
+.icon-turn {
+	-moz-transform: scale(1, -1);
+	-ms-transform: scale(1, -1);
+	-webkit-transform: scale(1, -1);
+	-o-transform: scale(1, -1);
+	transform: scale(1, -1);
 }
-#addMenu {
-	margin-left: 40vw;
-	margin-bottom: 3px;
+.form-control {
+	display: inline-block;
+	margin-right: 3px;
 }
+/*li:not(ul) {
+	opacity: 0;
+}
+li:hover {
+	opacity: 1;
+}
+.listener {
+	opacity: 0;
+}
+.unvisible {
+	visibility: hidden;
+}
+.unvisible:hover {
+	visibility: visible;
+}*/
+
 .horizontal-menu.ui-menu {
 	display: inline-flex;
 	width: auto;

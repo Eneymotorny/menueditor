@@ -4,21 +4,35 @@
 	<meta charset="UTF-8">
 	<title>MenuEditor</title>
 	<link rel="stylesheet" href="lib/jquery-ui/themes/base/jquery-ui.min.css">
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 	<h1>MenuEditor</h1>
-	<button id="addMenu">Add default menu</button><span> *click on аny MENU to editing</span>
 
 	<div>
-		<aside id="menuPanelTool">
-			<div></div>
-			<button id="addItem">
-				<span class="'ui-icon ui-icon-plusthick'"></span>
-			</button>
+
+		<aside id="menuPanelTool" class="panel panel-info">
+			<div class="panel-heading">
+				<button id="addItem" class="btn btn-success btn-sm" style="visibility: hidden">
+					<span class="glyphicon glyphicon-share-alt icon-turn"></span>
+				</button>
+				<span class="pull-right">Menu structure</span>
+			</div>
+			<div class="panel-body">
+				<div></div>
+			</div>
 		</aside>
 
-		<main id="menuContainer"></main>
+		<main id="menuContainer" class="panel panel-primary">
+			<div class="panel-heading">
+					<button id="addMenu" class="btn btn-info btn-sm" type="button">
+						Add default menu
+					</button>
+				<small class="pull-right"> *click on аny MENU to editing</small>
+			</div>
+			<div class="panel-body"></div>
+		</main>
 	</div>
 
 	<script src="lib/jquery/dist/jquery.min.js"></script>
